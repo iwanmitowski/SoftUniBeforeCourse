@@ -8,20 +8,19 @@ namespace _01.Ranking
     {
         static void Main(string[] args)
         {
-            //To be continued...
+            //To be continued... 20/100
             Dictionary<string, string> contests = new Dictionary<string, string>();
-            Dictionary<string, List<string>> submissions = new Dictionary<string, List<string>>();
+            Dictionary<string, Dictionary<string, int>> userContestPoints = new Dictionary<string, Dictionary<string, int>>();
             Dictionary<string, int> usersPoints = new Dictionary<string, int>();
 
             string[] contestInput = Console.ReadLine().Split(":");
-            int lastPoints = 0;
 
-            while (contestInput[0]!="end of contests")
+            while (contestInput[0] != "end of contests")
             {
                 string contest = contestInput[0];
                 string pass = contestInput[1];
 
-                if (contests.ContainsKey(contest)==false)
+                if (contests.ContainsKey(contest) == false)
                 {
                     contests.Add(contest, pass);
                 }
@@ -31,12 +30,13 @@ namespace _01.Ranking
 
             string[] submissionInput = Console.ReadLine().Split("=>");
 
-            while (submissionInput[0]!="end of submissions")
+            while (submissionInput[0] != "end of submissions")
             {
                 string contest = submissionInput[0];
                 string password = submissionInput[1];
                 string userName = submissionInput[2];
-                string points = submissionInput[3];
+                int points = int.Parse(submissionInput[3]);
+
 
                 if (contests.ContainsKey(contest) && contests[contest] == password)
                 {
@@ -44,25 +44,22 @@ namespace _01.Ranking
                     {
                         usersPoints.Add(userName, 0);
                     }
-                    usersPoints[userName] += int.Parse(points);
-                    lastPoints = int.Parse(points);
 
-                    if (submissions.ContainsKey(contest) ==false)
+
+                    if (userContestPoints.ContainsKey(userName) == false)
                     {
-                        
-                        submissions.Add(contest, new List<string>() { userName, points,});
+                        userContestPoints.Add(userName, new Dictionary<string, int>());
+
                     }
-                    else
+                    if (userContestPoints[userName].ContainsKey(contest) == false)
                     {
-                        
-
-                        if (int.Parse(points)>int.Parse(submissions[contest][1]))
-                        {
-                            
-                            submissions[contest][1] = points;
-                            usersPoints[userName] -= lastPoints;
-                        }
-                        
+                        userContestPoints[userName][contest] = 0;
+                    }
+                    if (userContestPoints[userName][contest] < points)
+                    {
+                        usersPoints[userName] -= userContestPoints[userName][contest];
+                        userContestPoints[userName][contest] = points;
+                        usersPoints[userName] += points;
                     }
 
                 }
@@ -70,20 +67,29 @@ namespace _01.Ranking
                 submissionInput = Console.ReadLine().Split("=>");
             }
 
+            string bestUser = usersPoints.Keys.Max();
+            int bestUserScore = usersPoints.Values.Max();
 
-            usersPoints = usersPoints.OrderByDescending(p => p.Value).ToDictionary(x=>x.Key, x=>x.Value);
-
+            //последният judge тест гърмеше тук, въпреки условието
             foreach (var user in usersPoints)
             {
-                Console.WriteLine($"Best candidate is {user.Key} with total {user.Value} points.");
-                break;
+                if (user.Value==bestUserScore)
+                {
+                    Console.WriteLine($"Best candidate is {user.Key} with total {user.Value} points.");
+                }
             }
-            Console.WriteLine("Ranking:");
-            foreach (var contest in submissions.OrderBy(x=>x.Value[0]))
+
+
+            Console.WriteLine("Ranking: ");
+            foreach (var user in userContestPoints.OrderBy(x => x.Key))
             {
-                Console.WriteLine(contest.Value[0]);
-                
+                Console.WriteLine(user.Key);
+                foreach (var contest in user.Value.OrderByDescending(x => x.Value))
+                {
+                    Console.WriteLine($"#  {contest.Key} -> {contest.Value}");
+                }
             }
+
         }
     }
 }
