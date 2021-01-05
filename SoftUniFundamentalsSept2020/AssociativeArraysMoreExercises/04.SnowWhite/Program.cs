@@ -48,6 +48,7 @@ namespace _04.SnowWhite
                     sortedDwarfs.Add($"({hatColor.Key}) {dwarf.Key} <-> ", dwarf.Value);
                 }
             }
+
             foreach (var dwarf in sortedDwarfs.OrderByDescending(x => x.Value))
             {
                 Console.WriteLine($"{dwarf.Key}{dwarf.Value}");
