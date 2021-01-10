@@ -17,7 +17,7 @@ namespace _05.NetherRealms
         static void Main(string[] args)
         {
             List<Demon> allDemons = new List<Demon>();
-            string patternForHealth = @"[A-z]";
+           
             string patternForDmg = @"[+-]?[0-9]+\.?[0-9]*";
             ;
             Regex regexDamage = new Regex(patternForDmg);
