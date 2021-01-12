@@ -5,6 +5,12 @@ using System.Text.RegularExpressions;
 
 namespace _03.PostOffice
 {
+    class WordProperties
+    {
+        public char Letter { get; set; }
+        public int WordLength { get; set; }
+    }
+
     class Program
     {
         static void Main(string[] args)
@@ -23,8 +29,8 @@ namespace _03.PostOffice
             MatchCollection first = regexFirst.Matches(firstPart);
             MatchCollection second = regexSecond.Matches(secondPart);
 
-
-            Dictionary<char, int> lettersAndLength = new Dictionary<char, int>();
+            List<WordProperties> wordProps = new List<WordProperties>();
+            
 
             //List<char> lettersFirst = new List<char>();
 
@@ -33,7 +39,8 @@ namespace _03.PostOffice
                 string currWord = letter.ToString();
                 for (int i = 1; i <= currWord.Length - 2; i++)
                 {
-                    lettersAndLength.Add(currWord[i], 0);
+                    wordProps.Add(new WordProperties { Letter= currWord[i], WordLength=0});
+                    
 
                 }
 
@@ -45,11 +52,11 @@ namespace _03.PostOffice
                 int firstPair = int.Parse(second[i].Groups[1].Value.ToString());
                 int secondPair = int.Parse(second[i].Groups[2].Value.ToString());
 
-                foreach (var letter in lettersAndLength)
+                foreach (var letter in wordProps)
                 {
-                    if ((int)letter.Key == firstPair)
+                    if ((int)letter.Letter == firstPair)
                     {
-                        lettersAndLength[letter.Key] = secondPair + 1;
+                        letter.WordLength = secondPair + 1;
                         break;
                     }
                 }
@@ -62,9 +69,9 @@ namespace _03.PostOffice
             {
                 string current = word;
 
-                foreach (var kvp in lettersAndLength)
+                foreach (var letter in wordProps)
                 {
-                    if (word.StartsWith(kvp.Key) && word.Length == kvp.Value)
+                    if (word.StartsWith(letter.Letter) && word.Length == letter.WordLength)
                     {
                         sb.AppendLine(word);
                     }
