@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Skeleton
 {
-    interface ITarget
+    public interface ITarget
     {
         int Health { get; }
 
@@ -15,6 +15,9 @@ namespace Skeleton
 
 
         int GiveExperience();
-        
+
+        bool IsDead();
+
+
     }
 }
