@@ -1,7 +1,6 @@
 ﻿using EasterRaces.Core.Contracts;
 using System;
 using EasterRaces.IO.Contracts;
-using EasterRaces.Core.Entities; 
 
 namespace EasterRaces.Core.Entities
 {

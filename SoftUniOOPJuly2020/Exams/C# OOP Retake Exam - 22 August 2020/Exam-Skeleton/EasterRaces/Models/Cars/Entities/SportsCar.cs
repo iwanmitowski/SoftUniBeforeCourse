@@ -4,13 +4,12 @@ using System.Text;
 
 namespace EasterRaces.Models.Cars.Entities
 {
-    class SportsCar:Car
+    class SportsCar : Car
     {
-        private const double CurrentCubicCentimeters = 3000;
-        private const int MinHorsePower = 250;
-        private const int MaxHorsePower = 450;
-
-        public SportsCar(string model, int horsePower) : base(model, horsePower, CurrentCubicCentimeters, MinHorsePower, MaxHorsePower)
+        const int CurrentCarCubicCentimeters = 3000;
+        const int CurrentMinHorsePower = 250;
+        const int CurrentMaxHorsePower = 450;
+        public SportsCar(string model, int horsePower) : base(model, horsePower, CurrentCarCubicCentimeters, CurrentMinHorsePower, CurrentMaxHorsePower)
         {
         }
     }

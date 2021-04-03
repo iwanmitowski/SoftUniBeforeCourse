@@ -1,9 +1,10 @@
 ﻿using EasterRaces.Models.Drivers.Contracts;
 using EasterRaces.Models.Races.Contracts;
-using EasterRaces.Utilities.Messages;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using EasterRaces.Utilities.Messages;
+using System.Linq;
 
 namespace EasterRaces.Models.Races.Entities
 {
@@ -11,30 +12,27 @@ namespace EasterRaces.Models.Races.Entities
     {
         private const int RequiredSymbols = 5;
         private const int RequiredLaps = 1;
-
         private string name;
         private int laps;
         private readonly List<IDriver> drivers;
-
         public Race(string name, int laps)
         {
-            Name = name;
-            Laps = laps;
-            drivers = new List<IDriver>();
-
+            this.Name = name;
+            this.Laps = laps;
+            this.drivers = new List<IDriver>();
         }
-
         public string Name
         {
             get
             {
                 return this.name;
             }
-            set
+            private set
             {
-                if (string.IsNullOrWhiteSpace(value) || value.Length < RequiredLaps)
+                if (string.IsNullOrWhiteSpace(value) || value.Length < RequiredSymbols)
                 {
                     throw new ArgumentException(string.Format(ExceptionMessages.InvalidName, value, RequiredSymbols));
+
                 }
                 this.name = value;
             }
@@ -46,9 +44,9 @@ namespace EasterRaces.Models.Races.Entities
             {
                 return this.laps;
             }
-            set
+            private set
             {
-                if (value < RequiredLaps)
+                if (value < 1)
                 {
                     throw new ArgumentException(string.Format(ExceptionMessages.InvalidNumberOfLaps, RequiredLaps));
                 }
@@ -60,11 +58,11 @@ namespace EasterRaces.Models.Races.Entities
 
         public void AddDriver(IDriver driver)
         {
-            if (driver == null)
+            if (driver==null)
             {
                 throw new ArgumentNullException(ExceptionMessages.DriverInvalid);
             }
-            if (driver.CanParticipate == false)
+            if (driver.Car==null||driver.CanParticipate==false)
             {
                 throw new ArgumentException(string.Format(ExceptionMessages.DriverNotParticipate, driver.Name));
             }
@@ -72,8 +70,7 @@ namespace EasterRaces.Models.Races.Entities
             {
                 throw new ArgumentNullException(string.Format(ExceptionMessages.DriverAlreadyAdded, driver.Name, this.Name));
             }
-
-            drivers.Add(driver);
+            this.drivers.Add(driver);
         }
     }
 }

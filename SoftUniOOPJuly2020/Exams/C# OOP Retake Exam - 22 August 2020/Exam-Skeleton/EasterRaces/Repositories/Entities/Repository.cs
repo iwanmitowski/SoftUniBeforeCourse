@@ -8,10 +8,9 @@ namespace EasterRaces.Repositories.Entities
     abstract class Repository<T> : IRepository<T>
     {
         private readonly List<T> models;
-
-        protected Repository()
+        public Repository()
         {
-            models = new List<T>();
+            this.models = new List<T>();
         }
         public void Add(T model)
         {
@@ -20,9 +19,12 @@ namespace EasterRaces.Repositories.Entities
 
         public IReadOnlyCollection<T> GetAll() => this.models.AsReadOnly();
 
+
         abstract public T GetByName(string name);
-
-        public bool Remove(T model) => this.models.Remove(model);
-
+        
+        public bool Remove(T model)
+        {
+            return this.models.Remove(model);
+        }
     }
 }

@@ -11,7 +11,8 @@ namespace EasterRaces.Core.Factories
     {
         public IRace CreateRace(string name, int laps)
         {
-            return new Race(name, laps);
+            IRace race = new Race(name, laps);
+            return race;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using EasterRaces.Core.Contracts;
 using EasterRaces.Core.Factories;
 using EasterRaces.Core.Factories.Contracts;
+using EasterRaces.Models.Drivers.Contracts;
 using EasterRaces.Repositories.Entities;
 using EasterRaces.Utilities.Messages;
 using System;
@@ -23,25 +24,14 @@ namespace EasterRaces.Core.Entities
         private readonly IRaceFactory raceFactory;
         public ChampionshipController()
         {
+            this.carFactory = new CarFactory();
+            this.driverFactory = new DriverFactory();
+            this.raceFactory = new RaceFactory();
 
+            this.carRepository = new CarRepository();
+            this.driverRepository = new DriverRepository();
+            this.raceRepository = new RaceRepository();
         }
-        public ChampionshipController(
-            CarRepository carRepository,
-            DriverRepository driverRepository,
-            RaceRepository raceRepository,
-            ICarFactory carFactory,
-            IDriverFactory driverFactory,
-            IRaceFactory raceFactory)
-        {
-            this.carRepository = carRepository;
-            this.driverRepository = driverRepository;
-            this.raceRepository = raceRepository;
-
-            this.carFactory = carFactory;
-            this.driverFactory = driverFactory;
-            this.raceFactory = raceFactory;
-        }
-
         public string AddCarToDriver(string driverName, string carModel)
         {
             var driver = this.driverRepository.GetByName(driverName);
@@ -51,32 +41,30 @@ namespace EasterRaces.Core.Entities
             {
                 throw new InvalidOperationException(string.Format(ExceptionMessages.DriverNotFound, driverName));
             }
-
             if (car == null)
             {
                 throw new InvalidOperationException(string.Format(ExceptionMessages.CarNotFound, carModel));
             }
-
             driver.AddCar(car);
+
             return string.Format(OutputMessages.CarAdded, driverName, carModel);
         }
 
         public string AddDriverToRace(string raceName, string driverName)
         {
-            var race = this.raceRepository.GetByName(raceName);
             var driver = this.driverRepository.GetByName(driverName);
-
-            if (race == null)
-            {
-                throw new InvalidOperationException(string.Format(ExceptionMessages.RaceNotFound, raceName));
-            }
+            var race = this.raceRepository.GetByName(raceName);
 
             if (driver == null)
             {
                 throw new InvalidOperationException(string.Format(ExceptionMessages.DriverNotFound, driverName));
             }
-
+            if (race == null)
+            {
+                throw new InvalidOperationException(string.Format(ExceptionMessages.RaceNotFound, raceName));
+            }
             race.AddDriver(driver);
+
             return string.Format(OutputMessages.DriverAdded, driverName, raceName);
         }
 
@@ -91,7 +79,6 @@ namespace EasterRaces.Core.Entities
             this.carRepository.Add(car);
 
             return string.Format(OutputMessages.CarCreated, car.GetType().Name, model);
-
         }
 
         public string CreateDriver(string driverName)
@@ -109,9 +96,9 @@ namespace EasterRaces.Core.Entities
 
         public string CreateRace(string name, int laps)
         {
-            if (this.raceRepository.GetAll().Any(x => x.Name == name && x.Laps==laps)) 
+            if (this.raceRepository.GetAll().Any(x => x.Name == name && x.Laps==laps))
             {
-                throw new InvalidOperationException(string.Format(ExceptionMessages.RaceExists, name));
+                throw new ArgumentException(string.Format(ExceptionMessages.RaceExists, name));
             }
 
             var race = this.raceFactory.CreateRace(name, laps);
@@ -124,29 +111,31 @@ namespace EasterRaces.Core.Entities
         {
             var race = this.raceRepository.GetByName(raceName);
 
-            if (race==null)
+            if (race == null)
             {
                 throw new InvalidOperationException(string.Format(ExceptionMessages.RaceNotFound, raceName));
             }
 
-            var drivers = race.Drivers.OrderByDescending(x => x.Car.CalculateRacePoints(race.Laps)).ToList();
+            List<IDriver> drivers = driverRepository.GetAll().ToList();
 
-            if (drivers.Count< RequiredParticipants)
+            if (drivers.Count < RequiredParticipants)
             {
-                throw new InvalidOperationException(string.Format(ExceptionMessages.RaceInvalid,race.Name,RequiredParticipants));
+                throw new InvalidCastException(string.Format(ExceptionMessages.RaceInvalid, raceName, RequiredParticipants));
             }
 
-            StringBuilder sb = new StringBuilder();
+            var sortedDrivers = drivers.OrderByDescending(x => x.Car.CalculateRacePoints(race.Laps)).Take(3).ToList();
 
             drivers.First().WinRace();
 
-            sb.AppendLine(string.Format(OutputMessages.DriverFirstPosition, drivers[0].Name, race.Name));
-            sb.AppendLine(string.Format(OutputMessages.DriverSecondPosition, drivers[1].Name, race.Name));
-            sb.AppendLine(string.Format(OutputMessages.DriverThirdPosition, drivers[2].Name, race.Name));
+            StringBuilder sb = new StringBuilder();
 
+            sb.AppendLine(string.Format(OutputMessages.DriverFirstPosition, sortedDrivers[0].Name, race.Name));
+            sb.AppendLine(string.Format(OutputMessages.DriverSecondPosition, sortedDrivers[1].Name, race.Name));
+            sb.AppendLine(string.Format(OutputMessages.DriverThirdPosition, sortedDrivers[2].Name, race.Name));
 
-            return sb.ToString();
+            raceRepository.Remove(race);
 
+            return sb.ToString().Trim();
         }
     }
 }

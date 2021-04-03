@@ -7,6 +7,6 @@ namespace EasterRaces.Core.Factories.Contracts
 {
     interface ICarFactory
     {
-        ICar CreateCar(string type, string model, int horsePower);
+       ICar CreateCar(string type, string model, int horesePower);
     }
 }
