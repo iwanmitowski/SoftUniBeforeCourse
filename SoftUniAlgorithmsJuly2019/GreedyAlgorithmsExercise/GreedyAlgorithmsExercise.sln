@@ -5,9 +5,13 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "02.ProcessorScheduling", "02.ProcessorScheduling\02.ProcessorScheduling.csproj", "{C2DA8876-48BB-43A6-B3BD-69A1608203A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01.FractionalKnapsack", "01.FractionalKnapsack\01.FractionalKnapsack.csproj", "{21DA8892-CB4C-49D0-B310-CA559E0ECA79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "01.FractionalKnapsack", "01.FractionalKnapsack\01.FractionalKnapsack.csproj", "{21DA8892-CB4C-49D0-B310-CA559E0ECA79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "03.KnightTour", "03.KnightTour\03.KnightTour.csproj", "{CAC546C2-EEB9-4F45-805B-AA065CF62F1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "03.KnightTour", "03.KnightTour\03.KnightTour.csproj", "{CAC546C2-EEB9-4F45-805B-AA065CF62F1B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "04.BestLecturesShcedule", "04.BestLecturesShcedule\04.BestLecturesShcedule.csproj", "{129D15F6-CAD2-448E-9C29-AB63F71CE64A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "05.EgiptianFraction", "05.EgiptianFraction\05.EgiptianFraction.csproj", "{D0C726B4-BE6B-41B4-A94F-64734084CF36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{CAC546C2-EEB9-4F45-805B-AA065CF62F1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAC546C2-EEB9-4F45-805B-AA065CF62F1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAC546C2-EEB9-4F45-805B-AA065CF62F1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{129D15F6-CAD2-448E-9C29-AB63F71CE64A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{129D15F6-CAD2-448E-9C29-AB63F71CE64A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{129D15F6-CAD2-448E-9C29-AB63F71CE64A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{129D15F6-CAD2-448E-9C29-AB63F71CE64A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0C726B4-BE6B-41B4-A94F-64734084CF36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0C726B4-BE6B-41B4-A94F-64734084CF36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0C726B4-BE6B-41B4-A94F-64734084CF36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0C726B4-BE6B-41B4-A94F-64734084CF36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
