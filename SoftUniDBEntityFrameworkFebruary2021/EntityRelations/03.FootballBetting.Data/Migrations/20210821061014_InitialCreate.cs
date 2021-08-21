@@ -105,13 +105,13 @@ namespace _03.FootballBetting.Data.Migrations
                         column: x => x.PrimaryKitColorId,
                         principalTable: "Colors",
                         principalColumn: "ColorId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Teams_Colors_SecondaryKitColorId",
                         column: x => x.SecondaryKitColorId,
                         principalTable: "Colors",
                         principalColumn: "ColorId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Teams_Towns_TownId",
                         column: x => x.TownId,
@@ -144,13 +144,13 @@ namespace _03.FootballBetting.Data.Migrations
                         column: x => x.AwayTeamId,
                         principalTable: "Teams",
                         principalColumn: "TeamId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Games_Teams_HomeTeamId",
                         column: x => x.HomeTeamId,
                         principalTable: "Teams",
                         principalColumn: "TeamId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

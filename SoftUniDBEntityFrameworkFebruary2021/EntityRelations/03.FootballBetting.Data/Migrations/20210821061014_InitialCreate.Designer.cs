@@ -10,7 +10,7 @@ using _03.FootballBetting.Data;
 namespace _03.FootballBetting.Data.Migrations
 {
     [DbContext(typeof(FootballBettingContext))]
-    [Migration("20210820121947_InitialCreate")]
+    [Migration("20210821061014_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -318,13 +318,13 @@ namespace _03.FootballBetting.Data.Migrations
                     b.HasOne("_03.FootballBetting.Data.Models.Team", "AwayTeam")
                         .WithMany("AwayGames")
                         .HasForeignKey("AwayTeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("_03.FootballBetting.Data.Models.Team", "HomeTeam")
                         .WithMany("HomeGames")
                         .HasForeignKey("HomeTeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AwayTeam");
@@ -375,13 +375,13 @@ namespace _03.FootballBetting.Data.Migrations
                     b.HasOne("_03.FootballBetting.Data.Models.Color", "PrimaryKitColor")
                         .WithMany("PrimaryKitTeams")
                         .HasForeignKey("PrimaryKitColorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("_03.FootballBetting.Data.Models.Color", "SecondaryKitColor")
                         .WithMany("SecondaryKitTeams")
                         .HasForeignKey("SecondaryKitColorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("_03.FootballBetting.Data.Models.Town", "Town")

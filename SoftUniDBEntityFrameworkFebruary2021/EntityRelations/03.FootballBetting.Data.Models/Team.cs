@@ -41,9 +41,11 @@ namespace _03.FootballBetting.Data.Models
 
         public Town Town { get; set; }
 
+        //Виж FootballBettingContext-a за допълнителните настройки
         [InverseProperty(nameof(Game.HomeTeam))]
         public virtual ICollection<Game> HomeGames { get; set; }
 
+        //Виж FootballBettingContext-a за допълнителните настройки
         [InverseProperty(nameof(Game.AwayTeam))]
         public virtual ICollection<Game> AwayGames { get; set; }
 

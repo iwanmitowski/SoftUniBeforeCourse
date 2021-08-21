@@ -22,9 +22,11 @@ namespace _03.FootballBetting.Data.Models
         [Required]
         public string Name { get; set; }
 
+        //Виж FootballBettingContext-a за допълнителните настройки
         [InverseProperty(nameof(Team.PrimaryKitColor))]
         public virtual ICollection<Team> PrimaryKitTeams { get; set; }
 
+        //Виж FootballBettingContext-a за допълнителните настройки
         [InverseProperty(nameof(Team.SecondaryKitColor))]
         public virtual ICollection<Team> SecondaryKitTeams { get; set; }
     }

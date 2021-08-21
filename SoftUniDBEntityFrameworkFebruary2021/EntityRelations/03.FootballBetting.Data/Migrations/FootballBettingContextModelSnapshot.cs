@@ -316,13 +316,13 @@ namespace _03.FootballBetting.Data.Migrations
                     b.HasOne("_03.FootballBetting.Data.Models.Team", "AwayTeam")
                         .WithMany("AwayGames")
                         .HasForeignKey("AwayTeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("_03.FootballBetting.Data.Models.Team", "HomeTeam")
                         .WithMany("HomeGames")
                         .HasForeignKey("HomeTeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AwayTeam");
@@ -373,13 +373,13 @@ namespace _03.FootballBetting.Data.Migrations
                     b.HasOne("_03.FootballBetting.Data.Models.Color", "PrimaryKitColor")
                         .WithMany("PrimaryKitTeams")
                         .HasForeignKey("PrimaryKitColorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("_03.FootballBetting.Data.Models.Color", "SecondaryKitColor")
                         .WithMany("SecondaryKitTeams")
                         .HasForeignKey("SecondaryKitColorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("_03.FootballBetting.Data.Models.Town", "Town")

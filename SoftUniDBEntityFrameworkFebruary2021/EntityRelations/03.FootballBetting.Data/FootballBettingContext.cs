@@ -28,11 +28,41 @@ namespace _03.FootballBetting.Data
                 optionsBuilder.UseSqlServer("Server=.;Database=FootballBetting;Integrated Security=true");
             }
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PlayerStatistic>()
                 .HasKey(x => new { x.GameId, x.PlayerId });
+
+
+            //Когато имам 2 колекции сочещи към един клас, за да не се бърка трябва .OnDelete да е DeleteBehavior.Restrict
+            modelBuilder.Entity<Team>(x =>
+                {
+                    x.HasOne(x => x.PrimaryKitColor)
+                     .WithMany(x => x.PrimaryKitTeams)
+                     .HasForeignKey(x => x.PrimaryKitColorId)
+                     .OnDelete(DeleteBehavior.Restrict);
+
+                    x.HasOne(x => x.SecondaryKitColor)
+                     .WithMany(x => x.SecondaryKitTeams)
+                     .HasForeignKey(x => x.SecondaryKitColorId)
+                     .OnDelete(DeleteBehavior.Restrict);
+                });
+            
+            modelBuilder.Entity<Game>(
+                x =>
+                {
+                    x.HasOne(x => x.HomeTeam)
+                     .WithMany(x => x.HomeGames)
+                     .HasForeignKey(x => x.HomeTeamId)
+                     .OnDelete(DeleteBehavior.Restrict);
+
+                    x.HasOne(x => x.AwayTeam)
+                     .WithMany(x => x.AwayGames)
+                     .HasForeignKey(x => x.AwayTeamId)
+                     .OnDelete(DeleteBehavior.Restrict);
+                });
+
+
         }
     }
 }
