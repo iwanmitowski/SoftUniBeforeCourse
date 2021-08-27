@@ -60,7 +60,7 @@ namespace BookShop
                 //Console.WriteLine(CountCopiesByAuthor(db));
 
                 //P13
-                Console.WriteLine(GetTotalProfitByCategory(db));
+                //Console.WriteLine(GetTotalProfitByCategory(db));
 
                 //P14
                 //Console.WriteLine(GetMostRecentBooks(db));
@@ -76,20 +76,62 @@ namespace BookShop
         //P16 - Remove Books
         public static int RemoveBooks(BookShopContext context)
         {
-            return 0;
+            //Query which books should be removed
+            //Not used .ToList() because the actual books are not needed
+            var books = context.Books
+                .Where(x => x.Copies < 4200);
+
+            var count = books.Count();
+
+            var bookCategories = context.BookCategories
+                .Where(x => x.Book.Copies < 4200);
+
+            context.RemoveRange(bookCategories);
+            context.RemoveRange(books);
+            context.SaveChanges();
+
+            return count;
         }
 
-        // P15 - Increase Prices
+        //P15
         public static void IncreasePrices(BookShopContext context)
         {
+            var books = context.Books
+                .Where(x => x.ReleaseDate.Value.Year < 2010)
+                .ToList();
 
+            foreach (var book in books)
+            {
+                book.Price += 5;
+            }
+
+            context.SaveChanges();
         }
 
-        //P14 - Most Recent Books
+        //P14
         public static string GetMostRecentBooks(BookShopContext context)
         {
             var sb = new StringBuilder();
 
+            var categories = context.Categories
+                .Select(x => new
+                {
+                    x.Name,
+                    Books = x.CategoryBooks
+                    .Select(x => x.Book)
+                    .OrderByDescending(x => x.ReleaseDate).Take(3),
+                })
+                .OrderBy(x => x.Name)
+                .ToList();
+
+            foreach (var category in categories)
+            {
+                sb.AppendLine($"--{category.Name}");
+                foreach (var book in category.Books)
+                {
+                    sb.AppendLine($"{book.Title} ({book.ReleaseDate.Value.Year})");
+                }
+            }
 
             return sb.ToString().Trim();
         }
@@ -99,7 +141,22 @@ namespace BookShop
         {
             var sb = new StringBuilder();
 
-            
+            //DbSet -> Mapping table -> Aggregating function
+            var categories = context
+                .Categories
+                .Select(x => new
+                {
+                    Name = x.Name,
+                    Profit = x.CategoryBooks.Sum(cb => cb.Book.Copies * cb.Book.Price)
+                })
+                .OrderByDescending(x => x.Profit)
+                .ThenBy(x => x.Name)
+                .ToList();
+
+            foreach (var category in categories)
+            {
+                sb.AppendLine($"{category.Name} ${category.Profit:f2}");
+            }
 
             return sb.ToString().Trim();
         }
