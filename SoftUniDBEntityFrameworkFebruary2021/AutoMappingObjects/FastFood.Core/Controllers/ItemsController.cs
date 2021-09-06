@@ -5,6 +5,7 @@
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Data;
+    using FastFood.Models;
     using Microsoft.AspNetCore.Mvc;
     using ViewModels.Items;
 
@@ -31,12 +32,21 @@
         [HttpPost]
         public IActionResult Create(CreateItemInputModel model)
         {
-            throw new NotImplementedException();
+            var item = mapper.Map<Item>(model);
+
+            this.context.Add(item);
+            this.context.SaveChanges();
+
+            return RedirectToAction(nameof(this.All));
         }
 
         public IActionResult All()
         {
-            throw new NotImplementedException();
+            var items = context.Items
+                .ProjectTo<ItemsAllViewModels>(mapper.ConfigurationProvider)
+                .ToList();
+
+            return this.View(items);
         }
     }
 }
