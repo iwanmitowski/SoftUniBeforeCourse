@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProductShop.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,9 @@ namespace ProductShop.Dtos.Export
     public class ExportUserAndProductContainerDTO
     {
         [XmlElement("count")]
-        public int Count => this.Users.Length;
+        public int Count { get; set; }
 
         [XmlElement("users")]
-        public ExportUserAndProductsDTO[] Users { get; set; }
+        public List<ExportUserAndProductsDTO> Users { get; set; }
     }
 }

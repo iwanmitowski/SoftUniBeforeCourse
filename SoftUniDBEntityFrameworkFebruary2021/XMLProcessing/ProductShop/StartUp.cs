@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Serialization;
 using AutoMapper;
@@ -60,35 +61,47 @@ namespace ProductShop
             var resultCategoriesByProductCount = GetCategoriesByProductsCount(context);
 
             //P08
-            //var resultUsersWithProducts = GetUsersWithProducts(context); TODO
+            var resultUsersWithProducts = GetUsersWithProducts(context);
 
-            //Console.WriteLine(resultUsersWithProducts);
+            Console.WriteLine(resultUsersWithProducts);
         }
 
-        ////P08 TODO
-        //public static string GetUsersWithProducts(ProductShopContext context)
-        //{
-        //    var users = context.Users
-        //         .Where(x => x.ProductsSold.Any())
-        //         .ProjectTo<ExportUserAndProductsDTO>(config)
-        //         .OrderByDescending(x => x.SoldProducts.Count)
-        //         .ThenBy(x => x.LastName)
-        //         .Take(10)
-        //         .ToArray();
+        //P08 TODO
+        public static string GetUsersWithProducts(ProductShopContext context)
+        {
+            var users = new ExportUserAndProductContainerDTO()
+                {
+                    Users = context.Users.Where(x => x.ProductsSold.Any())
+                    .Select(x => new ExportUserAndProductsDTO()
+                    {
+                        FirstName = x.FirstName,
+                        LastName = x.LastName,
+                        Age = x.Age,
+                        SoldProducts = new ExportProductDTO()
+                        {
+                            SoldProducts = x.ProductsSold.Select(p => new ExportSoldProductDTO()
+                            {
+                                Name = p.Name,
+                                Price = p.Price,
+                            }).ToList(),
+                            Count = x.ProductsSold.Count(),
+                        } 
+                    })
+                    .OrderByDescending(x => x.SoldProducts.Count)
+                    .ThenBy(x => x.LastName)
+                    .Take(10)
+                    .ToList(),
+                    Count = context.Users.Where(x => x.ProductsSold.Any()).Count()
+            };
 
-        //    var container = new ExportUserAndProductContainerDTO()
-        //    {
-        //        Users = users,
-        //    };
+            var xmlSerializer = new XmlSerializer(typeof(ExportUserAndProductContainerDTO), new XmlRootAttribute("Users"));
 
-        //    var xmlSerializer = new XmlSerializer(typeof(ExportUserAndProductContainerDTO), new XmlRootAttribute("Users"));
+            using var textWriter = new StringWriter();
 
-        //    using var textWriter = new StringWriter();
+            xmlSerializer.Serialize(textWriter, users);
 
-        //    xmlSerializer.Serialize(textWriter, container);
-
-        //    return textWriter.ToString().Trim();
-        //}
+            return textWriter.ToString().Trim();
+        }
 
         //P07
         public static string GetCategoriesByProductsCount(ProductShopContext context)

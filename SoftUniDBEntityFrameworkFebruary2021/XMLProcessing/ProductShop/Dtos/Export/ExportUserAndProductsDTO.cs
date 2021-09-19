@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProductShop.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using System.Xml.Serialization;
 
 namespace ProductShop.Dtos.Export
 {
+    [XmlType("User")]
     public class ExportUserAndProductsDTO
     {
         [XmlElement("firstName")]
@@ -16,9 +18,9 @@ namespace ProductShop.Dtos.Export
         public string LastName { get; set; }
 
         [XmlElement("age")]
-        public int Age { get; set; }
+        public int? Age { get; set; }
 
-        [XmlArray("SoldProducts")]
+        [XmlElement("SoldProducts")]
         public ExportProductDTO SoldProducts { get; set; }
     }
 }

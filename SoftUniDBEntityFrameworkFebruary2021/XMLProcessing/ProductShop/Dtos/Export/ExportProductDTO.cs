@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProductShop.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace ProductShop.Dtos.Export
     public class ExportProductDTO
     {
         [XmlElement("count")]
-        public int Count => SoldProducts.Count();
+        public int Count { get; set; }
 
         [XmlArray("products")]
         public List<ExportSoldProductDTO> SoldProducts { get; set; }
